@@ -34,10 +34,10 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 
   return (
     <Link href={`/campaign/${campaign.id}`}>
-      <Card className="group h-full transition-shadow hover:shadow-lg">
-        <CardHeader className="pb-3">
+      <Card className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-primary/30 bg-card/95 backdrop-blur">
+        <CardHeader className="pb-3 flex-none">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="line-clamp-2 text-base font-semibold leading-snug group-hover:text-primary transition-colors">
+            <h3 className="line-clamp-2 text-lg font-bold tracking-tight leading-snug group-hover:text-primary transition-colors duration-200">
               {campaign.title || `Campaign #${campaign.id}`}
             </h3>
             <Badge

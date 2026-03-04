@@ -77,84 +77,103 @@ export default function MyDonationsPage() {
   const totalDonated = donations.reduce((sum, d) => sum + d.amount, 0n);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-slate-50/50">
       <Header />
 
       <main className="flex-1">
-        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 animate-fade-in-up">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold">My Donations</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Your donation history across all campaigns
+            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">My Donations</h1>
+            <p className="mt-2 text-base text-slate-600">
+              Your charitable impact on the Mantle network.
             </p>
           </div>
 
           {!isConnected ? (
-            <div className="py-20 text-center">
-              <p className="text-lg text-muted-foreground">
+            <div className="flex flex-col items-center justify-center py-32 text-center bg-white rounded-3xl border border-dashed border-slate-200 shadow-sm">
+              <div className="mb-4 rounded-full bg-slate-100 p-4">
+                <span className="text-2xl">👛</span>
+              </div>
+              <p className="text-lg font-medium text-slate-600">
                 Connect your wallet to see your donation history.
               </p>
             </div>
           ) : loading ? (
             <div className="space-y-3">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-20 rounded-xl" />
+                <div key={i} className="h-20 w-full rounded-xl bg-white border border-slate-100 p-4 shadow-sm flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Skeleton className="h-10 w-10 rounded-full bg-slate-100" />
+                    <div className="space-y-2">
+                       <Skeleton className="h-4 w-32 bg-slate-100" />
+                       <Skeleton className="h-3 w-20 bg-slate-100" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-6 w-16 bg-slate-100" />
+                </div>
               ))}
             </div>
           ) : donations.length === 0 ? (
-            <div className="py-20 text-center">
-              <p className="text-lg text-muted-foreground">
-                You haven&apos;t made any donations yet.
+            <div className="flex flex-col items-center justify-center py-32 text-center bg-white rounded-3xl border border-dashed border-slate-200 shadow-sm animate-fade-in-up">
+              <div className="mb-4 rounded-full bg-indigo-50 p-4">
+                <Users className="h-10 w-10 text-indigo-300" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-slate-900">No donations yet</h3>
+              <p className="mb-6 max-w-sm text-base text-slate-500">
+                You haven&apos;t contributed to any campaigns yet.
               </p>
               <Link
                 href="/"
-                className="mt-2 inline-block text-sm text-primary hover:underline"
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 transition-all hover:shadow-md active:scale-95"
               >
-                Explore campaigns to donate
+                Explore campaigns
               </Link>
             </div>
           ) : (
-            <>
-              <Card className="mb-6">
-                <CardContent className="flex items-center justify-between pt-6">
+            <div className="animate-fade-in-up">
+              <Card className="mb-8 border-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-gradient-to-br from-indigo-500 to-primary text-white">
+                <CardContent className="flex items-center justify-between p-8">
                   <div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-indigo-100 font-medium mb-1">
                       Total Donated
                     </p>
-                    <p className="text-2xl font-bold">
-                      {formatStablecoin(totalDonated)}
+                    <p className="text-4xl font-black tracking-tight">
+                      ${formatStablecoin(totalDonated)}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="text-right">
+                    <p className="text-indigo-100 font-medium mb-1">
                       Transactions
                     </p>
-                    <p className="text-2xl font-bold">{donations.length}</p>
+                    <p className="text-3xl font-bold">{donations.length}</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {donations.map((d, i) => (
                   <Link
                     key={i}
                     href={`/campaign/${d.campaignId}`}
-                    className="block"
+                    className="group block"
                   >
-                    <div className="flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-accent">
-                      <div className="flex items-center gap-3">
-                        <Users className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex items-center justify-between rounded-xl bg-white border border-slate-100 p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5">
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 text-slate-500 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                          <Users className="h-5 w-5" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium">
+                          <p className="text-base font-semibold text-slate-900 group-hover:text-primary transition-colors">
                             Campaign #{d.campaignId.toString()}
                           </p>
+                          <p className="text-sm text-slate-500">Transaction ID: {i}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium">
-                          {formatStablecoin(d.amount)}
+                        <p className="text-lg font-bold text-slate-900">
+                          ${formatStablecoin(d.amount)}
                         </p>
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="secondary" className="mt-1 font-medium bg-slate-100 text-slate-600">
                           {d.token.toLowerCase() ===
                           USDC_ADDRESS?.toLowerCase()
                             ? "USDC"
@@ -165,7 +184,7 @@ export default function MyDonationsPage() {
                   </Link>
                 ))}
               </div>
-            </>
+            </div>
           )}
         </div>
       </main>

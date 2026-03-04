@@ -45,32 +45,51 @@ export default function MyCampaignsPage() {
           </div>
 
           {!isConnected ? (
-            <div className="py-20 text-center">
-              <p className="text-lg text-muted-foreground">
+            <div className="flex flex-col items-center justify-center py-32 text-center bg-slate-50/50 rounded-3xl border border-dashed border-slate-200">
+              <div className="mb-4 rounded-full bg-slate-100 p-4">
+                <span className="text-2xl">👛</span>
+              </div>
+              <p className="text-lg font-medium text-slate-600">
                 Connect your wallet to see your campaigns.
               </p>
             </div>
           ) : isLoading ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-64 rounded-xl" />
+                <div key={i} className="flex flex-col space-y-4 rounded-xl border border-slate-100 bg-white p-5 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-6 w-2/3 rounded-lg bg-slate-100" />
+                    <Skeleton className="h-5 w-16 rounded-full bg-slate-100" />
+                  </div>
+                  <Skeleton className="h-4 w-1/4 rounded bg-slate-100" />
+                  <div className="space-y-2 pt-4">
+                    <Skeleton className="h-3 w-full rounded bg-slate-100 delay-75" />
+                    <Skeleton className="h-3 w-5/6 rounded bg-slate-100 delay-150" />
+                  </div>
+                </div>
               ))}
             </div>
           ) : mine.length === 0 ? (
-            <div className="py-20 text-center">
-              <p className="text-lg text-muted-foreground">
-                You haven&apos;t created any campaigns yet.
+            <div className="flex flex-col items-center justify-center py-32 text-center bg-slate-50/50 rounded-3xl border border-dashed border-slate-200 animate-fade-in-up">
+              <div className="mb-4 rounded-full bg-indigo-50 p-4">
+                <Plus className="h-10 w-10 text-indigo-300" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-slate-900">No campaigns created</h3>
+              <p className="mb-6 max-w-sm text-base text-slate-500">
+                You haven&apos;t started any fundraising campaigns yet.
               </p>
               <Link href="/create">
-                <Button className="mt-4" variant="outline">
-                  Create your first campaign
+                <Button className="shadow-md">
+                  Start your first campaign
                 </Button>
               </Link>
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {mine.map((c) => (
-                <CampaignCard key={c.id.toString()} campaign={c} />
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {mine.map((c, index) => (
+                <div key={c.id.toString()} className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms`, animationFillMode: "both" }}>
+                  <CampaignCard campaign={c} />
+                </div>
               ))}
             </div>
           )}
