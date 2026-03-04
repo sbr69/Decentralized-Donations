@@ -1,0 +1,15 @@
+# build
+out/
+cache/
+broadcast/
+
+# env
+.env
+
+# deps
+node_modules/
+lib/
+
+# misc
+.DS_Store
+*.swp
