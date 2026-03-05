@@ -1,8 +1,9 @@
-import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { type Chain } from "viem";
-import { http } from "wagmi";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import { injectedWallet } from "@rainbow-me/rainbowkit/wallets";
+import { createConfig, http } from "wagmi";
+import { defineChain } from "viem";
 
-export const mantleSepolia: Chain = {
+export const mantleSepolia = defineChain({
   id: 5003,
   name: "Mantle Sepolia",
   nativeCurrency: { name: "MNT", symbol: "MNT", decimals: 18 },
@@ -13,14 +14,30 @@ export const mantleSepolia: Chain = {
     default: { name: "Mantlescan", url: "https://sepolia.mantlescan.xyz" },
   },
   testnet: true,
-};
+});
 
-export const config = getDefaultConfig({
-  appName: "Decentralised Donations",
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "demo",
+const projectId =
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "demo";
+
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: "Connect",
+      wallets: [injectedWallet],
+    },
+  ],
+  {
+    appName: "Decentralised Donations",
+    projectId,
+  }
+);
+
+export const config = createConfig({
+  connectors,
   chains: [mantleSepolia],
   transports: {
     [mantleSepolia.id]: http("https://rpc.sepolia.mantle.xyz"),
   },
+  multiInjectedProviderDiscovery: true,
   ssr: true,
 });
