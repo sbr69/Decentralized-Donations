@@ -359,7 +359,6 @@ contract DonationPlatformTest is TestSetup {
         _donateUSDC(donor2, id, SMALL_DONATION);
         _donateUSDC(donor3, id, SMALL_DONATION);
 
-        // 3 donors, need >50% = 2 reports
         vm.prank(donor1);
         platform.reportFraud(id, "QmProof1", "");
 
@@ -378,7 +377,6 @@ contract DonationPlatformTest is TestSetup {
         _donateUSDC(donor1, id, SMALL_DONATION);
         _donateUSDC(donor2, id, SMALL_DONATION);
 
-        // 2 donors, 50% = 1 report, needs >50% to trigger
         vm.prank(donor1);
         platform.reportFraud(id, "QmProof", "");
 

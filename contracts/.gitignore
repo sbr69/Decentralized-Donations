@@ -2,6 +2,7 @@
 out/
 cache/
 broadcast/
+.gas-snapshot
 
 # env
 .env

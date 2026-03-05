@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-/// @dev Non-standard ERC-20 mock replicating Tether's transfer behavior.
-///      transfer/transferFrom don't return bool, same as real USDT.
 contract MockUSDT {
     string public constant name = "Tether USD";
     string public constant symbol = "USDT";

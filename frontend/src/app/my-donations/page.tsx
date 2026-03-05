@@ -15,7 +15,7 @@ import {
   USDC_ADDRESS,
   USDT_ADDRESS,
 } from "@/lib/contracts";
-import { formatStablecoin, truncateAddress } from "@/lib/utils";
+import { formatStablecoin, truncateAddress, getLogsChunked } from "@/lib/utils";
 
 interface DonationRecord {
   campaignId: bigint;
@@ -38,7 +38,7 @@ export default function MyDonationsPage() {
 
     (async () => {
       try {
-        const logs = await client.getLogs({
+        const logs = await getLogsChunked(client, {
           address: PLATFORM_ADDRESS,
           event: {
             type: "event",
@@ -51,8 +51,6 @@ export default function MyDonationsPage() {
             ],
           } as const,
           args: { donor: address },
-          fromBlock: 0n,
-          toBlock: "latest",
         });
 
         setDonations(

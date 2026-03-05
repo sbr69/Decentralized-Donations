@@ -8,6 +8,7 @@ import {
   PLATFORM_ADDRESS,
   type CampaignData,
 } from "@/lib/contracts";
+import { getLogsChunked } from "@/lib/utils";
 
 export function useCampaign(campaignId: bigint) {
   const { data, isLoading, refetch } = useReadContract({
@@ -28,7 +29,7 @@ export function useCampaign(campaignId: bigint) {
     if (!client) return;
     (async () => {
       try {
-        const logs = await client.getLogs({
+        const logs = await getLogsChunked(client, {
           address: PLATFORM_ADDRESS,
           event: {
             type: "event",
@@ -45,8 +46,6 @@ export function useCampaign(campaignId: bigint) {
             ],
           } as const,
           args: { campaignId },
-          fromBlock: 0n,
-          toBlock: "latest",
         });
 
         if (logs.length > 0) {
@@ -120,7 +119,7 @@ export function useAllCampaigns() {
       >();
 
       try {
-        const logs = await client.getLogs({
+        const logs = await getLogsChunked(client, {
           address: PLATFORM_ADDRESS,
           event: {
             type: "event",
@@ -136,8 +135,6 @@ export function useAllCampaigns() {
               { name: "categoryId", type: "uint8", indexed: false },
             ],
           } as const,
-          fromBlock: 0n,
-          toBlock: "latest",
         });
 
         for (const log of logs) {
@@ -226,7 +223,7 @@ export function useCampaignUpdates(campaignId: bigint) {
     if (!client) return;
     (async () => {
       try {
-        const logs = await client.getLogs({
+        const logs = await getLogsChunked(client, {
           address: PLATFORM_ADDRESS,
           event: {
             type: "event",
@@ -238,8 +235,6 @@ export function useCampaignUpdates(campaignId: bigint) {
             ],
           } as const,
           args: { campaignId },
-          fromBlock: 0n,
-          toBlock: "latest",
         });
         setUpdates(
           logs.map((l) => ({
@@ -272,7 +267,7 @@ export function useCampaignDonations(campaignId: bigint) {
     if (!client) return;
     (async () => {
       try {
-        const logs = await client.getLogs({
+        const logs = await getLogsChunked(client, {
           address: PLATFORM_ADDRESS,
           event: {
             type: "event",
@@ -285,8 +280,6 @@ export function useCampaignDonations(campaignId: bigint) {
             ],
           } as const,
           args: { campaignId },
-          fromBlock: 0n,
-          toBlock: "latest",
         });
         setDonations(
           logs.map((l) => ({

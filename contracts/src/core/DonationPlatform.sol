@@ -9,16 +9,8 @@ import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 
 import { DonorBadge } from "../tokens/DonorBadge.sol";
 
-/// @title DonationPlatform
-/// @author github.com/sbr69
-/// @notice Decentralised crowdfunding on Mantle. USDC/USDT only, event-based metadata,
-///         fraud reporting with majority-vote refunds, early withdrawal with 100% donor approval.
 contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
     using SafeERC20 for IERC20;
-
-    // -------------------------------------------------------------------------
-    //  Constants & Immutables
-    // -------------------------------------------------------------------------
 
     uint40 public constant MIN_DURATION = 3 days;
     uint128 public constant MIN_DONATION = 1e6; // 1 token (6 decimals)
@@ -28,10 +20,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
     IERC20 public immutable USDT;
     DonorBadge public immutable badge;
 
-    // -------------------------------------------------------------------------
-    //  Types
-    // -------------------------------------------------------------------------
-
     enum Status {
         Active,
         Closed,
@@ -39,17 +27,13 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         Expired
     }
 
-    /// @dev Packed into 3 storage slots.
     struct Campaign {
-        // slot 1
         address creator;
         uint40 deadline;
         Status status;
         bool earlyWithdrawRequested;
-        // slot 2
         uint128 targetAmount;
         uint128 raisedAmount;
-        // slot 3
         uint32 ratingSum;
         uint16 ratingCount;
         uint16 donorCount;
@@ -57,10 +41,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         uint16 earlyWithdrawApprovals;
         uint8 categoryId;
     }
-
-    // -------------------------------------------------------------------------
-    //  State
-    // -------------------------------------------------------------------------
 
     uint256 public campaignCount;
     mapping(uint256 => Campaign) public campaigns;
@@ -70,10 +50,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
     mapping(uint256 => mapping(address => bool)) public hasRated;
     mapping(uint256 => mapping(address => bool)) public hasReported;
     mapping(uint256 => mapping(address => bool)) public hasApprovedEarlyWithdraw;
-
-    // -------------------------------------------------------------------------
-    //  Errors
-    // -------------------------------------------------------------------------
 
     error InvalidTarget();
     error DeadlineTooSoon();
@@ -100,11 +76,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
     error WithdrawGraceExpired();
     error NothingToWithdraw();
 
-    // -------------------------------------------------------------------------
-    //  Events
-    // -------------------------------------------------------------------------
-
-    // metadata (title, description, proofCID) lives only in events to save gas
     event CampaignCreated(
         uint256 indexed campaignId,
         address indexed creator,
@@ -144,19 +115,11 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
 
     event EarlyWithdrawExecuted(uint256 indexed campaignId, uint128 usdcAmount, uint128 usdtAmount);
 
-    // -------------------------------------------------------------------------
-    //  Constructor
-    // -------------------------------------------------------------------------
-
     constructor(address _usdc, address _usdt, address _badge, address _owner) Ownable(_owner) {
         USDC = IERC20(_usdc);
         USDT = IERC20(_usdt);
         badge = DonorBadge(_badge);
     }
-
-    // -------------------------------------------------------------------------
-    //  Campaign management
-    // -------------------------------------------------------------------------
 
     function createCampaign(
         uint128 targetAmount,
@@ -183,7 +146,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         emit CampaignCreated(id, msg.sender, targetAmount, deadline, proofCID, title, description, categoryId);
     }
 
-    /// @notice Post an update (event-only, no storage cost).
     function postUpdate(uint256 campaignId, string calldata updateCID, string calldata message) external {
         Campaign storage c = campaigns[campaignId];
         if (msg.sender != c.creator) revert NotCreator();
@@ -191,10 +153,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
 
         emit CampaignUpdate(campaignId, updateCID, message);
     }
-
-    // -------------------------------------------------------------------------
-    //  Donations
-    // -------------------------------------------------------------------------
 
     function donate(uint256 campaignId, address token, uint128 amount) external nonReentrant whenNotPaused {
         if (amount < MIN_DONATION) revert BelowMinDonation();
@@ -235,11 +193,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         }
     }
 
-    // -------------------------------------------------------------------------
-    //  Rating
-    // -------------------------------------------------------------------------
-
-    /// @notice Rate a campaign 1-5. Only donors, once per donor.
     function rateCampaign(uint256 campaignId, uint8 rating) external {
         if (rating < 1 || rating > 5) revert InvalidRating();
         if (!isDonor[campaignId][msg.sender]) revert NotDonor();
@@ -256,11 +209,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         emit RatingSubmitted(campaignId, msg.sender, rating);
     }
 
-    // -------------------------------------------------------------------------
-    //  Fund withdrawal
-    // -------------------------------------------------------------------------
-
-    /// @notice Withdraw after deadline. Target must be met, no fraud majority, within grace.
     function withdrawFunds(uint256 campaignId) external nonReentrant {
         Campaign storage c = campaigns[campaignId];
 
@@ -286,10 +234,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
 
         emit FundsWithdrawn(campaignId, c.creator, usdcBal, usdtBal);
     }
-
-    // -------------------------------------------------------------------------
-    //  Early withdrawal (requires unanimous donor approval)
-    // -------------------------------------------------------------------------
 
     function requestEarlyWithdraw(uint256 campaignId) external {
         Campaign storage c = campaigns[campaignId];
@@ -342,11 +286,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         emit EarlyWithdrawExecuted(campaignId, usdcBal, usdtBal);
     }
 
-    // -------------------------------------------------------------------------
-    //  Fraud reporting
-    // -------------------------------------------------------------------------
-
-    /// @notice Report fraud with proof. >50% donor reports triggers refunds.
     function reportFraud(uint256 campaignId, string calldata proofCID, string calldata message) external {
         if (bytes(proofCID).length == 0 && bytes(message).length == 0) revert InvalidProof();
 
@@ -369,18 +308,13 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         }
     }
 
-    // -------------------------------------------------------------------------
-    //  Expiry & Refunds
-    // -------------------------------------------------------------------------
-
-    /// @notice Mark a campaign as expired after deadline (target not met or creator abandoned).
     function expireCampaign(uint256 campaignId) external {
         Campaign storage c = campaigns[campaignId];
         if (c.status != Status.Active) revert CampaignNotActive();
         if (uint40(block.timestamp) < c.deadline) revert DeadlineNotPassed();
         if (c.raisedAmount >= c.targetAmount) {
             if (uint40(block.timestamp) <= c.deadline + WITHDRAW_GRACE) {
-                revert TargetNotMet(); // within grace, creator should withdraw
+                revert TargetNotMet();
             }
         }
 
@@ -406,10 +340,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
         emit RefundClaimed(campaignId, msg.sender, usdcOwed, usdtOwed);
     }
 
-    // -------------------------------------------------------------------------
-    //  Admin
-    // -------------------------------------------------------------------------
-
     function pause() external onlyOwner {
         _pause();
     }
@@ -417,10 +347,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
     function unpause() external onlyOwner {
         _unpause();
     }
-
-    // -------------------------------------------------------------------------
-    //  View helpers
-    // -------------------------------------------------------------------------
 
     function getCampaign(uint256 campaignId)
         external
@@ -460,10 +386,6 @@ contract DonationPlatform is ReentrancyGuard, Ownable, Pausable {
     function getDonation(uint256 campaignId, address donor, address token) external view returns (uint128) {
         return donations[campaignId][donor][token];
     }
-
-    // -------------------------------------------------------------------------
-    //  Internal
-    // -------------------------------------------------------------------------
 
     function _isAcceptedToken(address token) internal view returns (bool) {
         return token == address(USDC) || token == address(USDT);

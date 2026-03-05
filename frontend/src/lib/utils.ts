@@ -1,6 +1,23 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { formatUnits } from "viem";
+import { formatUnits, type PublicClient } from "viem";
+
+const BLOCK_RANGE = 9_999n;
+const DEPLOY_BLOCK = 35_581_900n;
+
+// mantle sepolia limits eth_getLogs to 10k blocks
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getLogsChunked(client: PublicClient, params: any): Promise<any[]> {
+  const latest = await client.getBlockNumber();
+  const allLogs: unknown[] = [];
+
+  for (let from = DEPLOY_BLOCK; from <= latest; from += BLOCK_RANGE + 1n) {
+    const to = from + BLOCK_RANGE > latest ? latest : from + BLOCK_RANGE;
+    const logs = await client.getLogs({ ...params, fromBlock: from, toBlock: to });
+    allLogs.push(...logs);
+  }
+  return allLogs;
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
