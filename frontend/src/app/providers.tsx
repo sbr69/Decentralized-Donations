@@ -9,7 +9,7 @@ import { config } from "@/lib/wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const theme = lightTheme({
-  accentColor: "#4338ca",
+  accentColor: "#c2762e",
   accentColorForeground: "#ffffff",
   borderRadius: "medium",
   fontStack: "system",

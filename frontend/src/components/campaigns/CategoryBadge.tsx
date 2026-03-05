@@ -8,14 +8,14 @@ interface CategoryBadgeProps {
 }
 
 const COLORS: Record<number, string> = {
-  0: "bg-rose-50 text-rose-700 border-rose-200",
-  1: "bg-blue-50 text-blue-700 border-blue-200",
-  2: "bg-orange-50 text-orange-700 border-orange-200",
-  3: "bg-violet-50 text-violet-700 border-violet-200",
-  4: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  5: "bg-cyan-50 text-cyan-700 border-cyan-200",
-  6: "bg-pink-50 text-pink-700 border-pink-200",
-  7: "bg-gray-50 text-gray-700 border-gray-200",
+  0: "bg-red-50/80 text-red-700 border-red-200/60",
+  1: "bg-sky-50/80 text-sky-700 border-sky-200/60",
+  2: "bg-amber-50/80 text-amber-700 border-amber-200/60",
+  3: "bg-purple-50/80 text-purple-700 border-purple-200/60",
+  4: "bg-[#2d6a4f]/5 text-[#2d6a4f] border-[#2d6a4f]/15",
+  5: "bg-teal-50/80 text-teal-700 border-teal-200/60",
+  6: "bg-fuchsia-50/80 text-fuchsia-700 border-fuchsia-200/60",
+  7: "bg-[#f0ede8] text-[#6b6b7b] border-[#e8e4dd]",
 };
 
 export function CategoryBadge({ categoryId }: CategoryBadgeProps) {

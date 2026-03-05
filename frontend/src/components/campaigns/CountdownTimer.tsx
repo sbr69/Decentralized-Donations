@@ -19,7 +19,7 @@ export function CountdownTimer({ deadline }: CountdownTimerProps) {
   }, [deadline]);
 
   return (
-    <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+    <span className="flex items-center gap-1.5 text-sm text-[#0077b6]">
       <Clock className="h-4 w-4" />
       {display}
     </span>

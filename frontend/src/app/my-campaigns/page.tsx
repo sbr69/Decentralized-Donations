@@ -39,37 +39,37 @@ export default function MyCampaignsPage() {
           </div>
 
           {!isConnected ? (
-            <div className="flex flex-col items-center justify-center py-32 text-center bg-slate-50/50 rounded-3xl border border-dashed border-slate-200">
-              <div className="mb-4 rounded-full bg-slate-100 p-4">
+            <div className="flex flex-col items-center justify-center py-32 text-center bg-[#fef3e2]/20 rounded-3xl border border-dashed border-[#e8e4dd]">
+              <div className="mb-4 rounded-2xl bg-[#fef3e2] p-4">
                 <span className="text-2xl">👛</span>
               </div>
-              <p className="text-lg font-medium text-slate-600">
+              <p className="text-lg font-medium text-[#6b6b7b]">
                 Connect your wallet to see your campaigns.
               </p>
             </div>
           ) : isLoading ? (
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex flex-col space-y-4 rounded-xl border border-slate-100 bg-white p-5 shadow-sm">
+                <div key={i} className="flex flex-col space-y-4 rounded-2xl border border-[#e8e4dd] bg-white p-5">
                   <div className="flex items-center justify-between">
-                    <Skeleton className="h-6 w-2/3 rounded-lg bg-slate-100" />
-                    <Skeleton className="h-5 w-16 rounded-full bg-slate-100" />
+                    <Skeleton className="h-6 w-2/3 rounded-lg bg-[#f0ede8]" />
+                    <Skeleton className="h-5 w-16 rounded-full bg-[#f0ede8]" />
                   </div>
-                  <Skeleton className="h-4 w-1/4 rounded bg-slate-100" />
+                  <Skeleton className="h-4 w-1/4 rounded bg-[#f0ede8]" />
                   <div className="space-y-2 pt-4">
-                    <Skeleton className="h-3 w-full rounded bg-slate-100 delay-75" />
-                    <Skeleton className="h-3 w-5/6 rounded bg-slate-100 delay-150" />
+                    <Skeleton className="h-3 w-full rounded bg-[#f0ede8] delay-75" />
+                    <Skeleton className="h-3 w-5/6 rounded bg-[#f0ede8] delay-150" />
                   </div>
                 </div>
               ))}
             </div>
           ) : mine.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-32 text-center bg-slate-50/50 rounded-3xl border border-dashed border-slate-200 animate-fade-in-up">
-              <div className="mb-4 rounded-full bg-indigo-50 p-4">
-                <Plus className="h-10 w-10 text-indigo-300" />
+            <div className="flex flex-col items-center justify-center py-32 text-center bg-[#fef3e2]/20 rounded-3xl border border-dashed border-[#e8e4dd] animate-fade-in-up">
+              <div className="mb-4 rounded-2xl bg-[#fef3e2] p-4">
+                <Plus className="h-10 w-10 text-[#c2762e]/40" />
               </div>
-              <h3 className="mb-2 text-xl font-bold text-slate-900">No campaigns created</h3>
-              <p className="mb-6 max-w-sm text-base text-slate-500">
+              <h3 className="mb-2 text-xl font-bold text-[#1a1a2e]">No campaigns created</h3>
+              <p className="mb-6 max-w-sm text-base text-[#6b6b7b]">
                 You haven&apos;t started any fundraising campaigns yet.
               </p>
               <Link href="/create">

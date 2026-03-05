@@ -151,7 +151,7 @@ export function DonateModal({
 
         {donateSuccess || step === "done" ? (
           <div className="py-6 text-center">
-            <p className="text-lg font-semibold text-green-600">
+            <p className="text-lg font-semibold text-[#2d6a4f]">
               Donation successful!
             </p>
             <p className="mt-1 text-sm text-muted-foreground">

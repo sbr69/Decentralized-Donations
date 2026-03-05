@@ -33,8 +33,8 @@ export function StarRating({
             style={{ width: size, height: size }}
             className={cn(
               star <= value
-                ? "fill-amber-400 text-amber-400"
-                : "fill-transparent text-gray-300"
+                ? "fill-[#e09f3e] text-[#e09f3e]"
+                : "fill-transparent text-[#e8e4dd]"
             )}
           />
         </button>
