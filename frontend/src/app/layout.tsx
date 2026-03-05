@@ -13,10 +13,6 @@ export const metadata: Metadata = {
   title: "Decentralised Donations",
   description:
     "Transparent on-chain fundraising on Mantle. Create campaigns, donate stablecoins, rate projects, and report fraud — all decentralised.",
-  icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
-  },
 };
 
 export default function RootLayout({
