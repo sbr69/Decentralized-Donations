@@ -1,7 +1,13 @@
 "use client";
 
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { PLATFORM_ABI, PLATFORM_ADDRESS } from "@/lib/contracts";
+
+function txError(err: Error) {
+  return (err as any).shortMessage || err.message;
+}
 
 export function useCreateCampaign() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
@@ -9,6 +15,13 @@ export function useCreateCampaign() {
     hash,
     query: { enabled: !!hash },
   });
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Campaign created!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
 
   const create = (
     targetAmount: bigint,
@@ -36,6 +49,13 @@ export function useWithdrawFunds() {
     query: { enabled: !!hash },
   });
 
+  useEffect(() => {
+    if (isSuccess) toast.success("Funds withdrawn!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
+
   const withdraw = (campaignId: bigint) => {
     writeContract({
       address: PLATFORM_ADDRESS,
@@ -54,6 +74,13 @@ export function useRateCampaign() {
     hash,
     query: { enabled: !!hash },
   });
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Rating submitted!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
 
   const rate = (campaignId: bigint, rating: number) => {
     writeContract({
@@ -74,6 +101,13 @@ export function useReportFraud() {
     query: { enabled: !!hash },
   });
 
+  useEffect(() => {
+    if (isSuccess) toast.success("Report submitted.");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
+
   const report = (campaignId: bigint, proofCID: string, message: string) => {
     writeContract({
       address: PLATFORM_ADDRESS,
@@ -92,6 +126,13 @@ export function useClaimRefund() {
     hash,
     query: { enabled: !!hash },
   });
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Refund claimed!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
 
   const claim = (campaignId: bigint) => {
     writeContract({
@@ -112,6 +153,13 @@ export function useRequestEarlyWithdraw() {
     query: { enabled: !!hash },
   });
 
+  useEffect(() => {
+    if (isSuccess) toast.success("Early withdraw requested.");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
+
   const request = (campaignId: bigint) => {
     writeContract({
       address: PLATFORM_ADDRESS,
@@ -130,6 +178,13 @@ export function useApproveEarlyWithdraw() {
     hash,
     query: { enabled: !!hash },
   });
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Early withdraw approved!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
 
   const approve = (campaignId: bigint) => {
     writeContract({
@@ -150,6 +205,13 @@ export function useExecuteEarlyWithdraw() {
     query: { enabled: !!hash },
   });
 
+  useEffect(() => {
+    if (isSuccess) toast.success("Early withdraw executed!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
+
   const execute = (campaignId: bigint) => {
     writeContract({
       address: PLATFORM_ADDRESS,
@@ -169,6 +231,13 @@ export function usePostUpdate() {
     query: { enabled: !!hash },
   });
 
+  useEffect(() => {
+    if (isSuccess) toast.success("Update posted!");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
+
   const post = (campaignId: bigint, updateCID: string, message: string) => {
     writeContract({
       address: PLATFORM_ADDRESS,
@@ -187,6 +256,13 @@ export function useExpireCampaign() {
     hash,
     query: { enabled: !!hash },
   });
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Campaign expired.");
+  }, [isSuccess]);
+  useEffect(() => {
+    if (error) toast.error(txError(error));
+  }, [error]);
 
   const expire = (campaignId: bigint) => {
     writeContract({

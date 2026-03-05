@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 import { useAccount, usePublicClient } from "wagmi";
 import Link from "next/link";
 import { Users } from "lucide-react";
-
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -77,11 +74,8 @@ export default function MyDonationsPage() {
   const totalDonated = donations.reduce((sum, d) => sum + d.amount, 0n);
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <Header />
-
-      <main className="flex-1">
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 animate-fade-in-up">
+    <div className="bg-slate-50/50">
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 animate-fade-in-up">
           <div className="mb-8">
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">My Donations</h1>
             <p className="mt-2 text-base text-slate-600">
@@ -187,9 +181,6 @@ export default function MyDonationsPage() {
             </div>
           )}
         </div>
-      </main>
-
-      <Footer />
     </div>
   );
 }

@@ -2,8 +2,6 @@
 
 import { useState, useMemo } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { CampaignCard } from "@/components/campaigns/CampaignCard";
 import { Input } from "@/components/ui/input";
 import {
@@ -65,10 +63,7 @@ export default function HomePage() {
   }, [campaigns, search, category, sort]);
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-
-      <main className="flex-1">
+    <>
         {/* Hero */}
         <section className="relative overflow-hidden bg-white py-20 sm:py-28 lg:py-32">
           {/* Subtle animated background elements */}
@@ -188,9 +183,6 @@ export default function HomePage() {
             </div>
           )}
         </section>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseUnits } from "viem";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -111,9 +112,13 @@ export function DonateModal({
       {
         onSuccess: () => {
           setStep("done");
+          toast.success("Donation successful!");
           onSuccess?.();
         },
-        onError: () => setStep("input"),
+        onError: (err) => {
+          toast.error(err.message);
+          setStep("input");
+        },
       }
     );
   };

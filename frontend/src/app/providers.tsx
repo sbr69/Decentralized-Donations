@@ -1,12 +1,19 @@
 "use client";
 
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode, useState } from "react";
 import { WagmiProvider } from "wagmi";
 import { config } from "@/lib/wagmi";
 
 import "@rainbow-me/rainbowkit/styles.css";
+
+const theme = lightTheme({
+  accentColor: "#4338ca",
+  accentColorForeground: "#ffffff",
+  borderRadius: "medium",
+  fontStack: "system",
+});
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
@@ -23,6 +30,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           modalSize="compact"
+          theme={theme}
           appInfo={{ appName: "Decentralised Donations" }}
         >
           {children}

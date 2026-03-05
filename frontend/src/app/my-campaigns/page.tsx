@@ -5,8 +5,6 @@ import { useAccount } from "wagmi";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { CampaignCard } from "@/components/campaigns/CampaignCard";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,11 +22,7 @@ export default function MyCampaignsPage() {
   }, [campaigns, address]);
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-
-      <main className="flex-1">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold">My Campaigns</h1>
@@ -93,10 +87,6 @@ export default function MyCampaignsPage() {
               ))}
             </div>
           )}
-        </div>
-      </main>
-
-      <Footer />
     </div>
   );
 }

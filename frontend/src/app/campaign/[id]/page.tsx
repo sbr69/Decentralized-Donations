@@ -17,8 +17,6 @@ import {
   Clock,
 } from "lucide-react";
 
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { DonateModal } from "@/components/campaigns/DonateModal";
 import { StarRating } from "@/components/campaigns/StarRating";
 import { CountdownTimer } from "@/components/campaigns/CountdownTimer";
@@ -112,31 +110,23 @@ export default function CampaignDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col bg-slate-50/50">
-        <Header />
-        <main className="mx-auto max-w-5xl flex-1 px-4 py-12 sm:px-6 w-full animate-pulse">
-          <Skeleton className="mb-4 h-10 w-2/3 max-w-lg rounded-xl bg-slate-200" />
-          <Skeleton className="mb-10 h-6 w-1/3 max-w-md rounded-lg bg-slate-200" />
-          <Skeleton className="h-96 w-full rounded-2xl bg-slate-200" />
-        </main>
-        <Footer />
+      <div className="mx-auto max-w-5xl flex-1 px-4 py-12 sm:px-6 w-full animate-pulse">
+        <Skeleton className="mb-4 h-10 w-2/3 max-w-lg rounded-xl bg-slate-200" />
+        <Skeleton className="mb-10 h-6 w-1/3 max-w-md rounded-lg bg-slate-200" />
+        <Skeleton className="h-96 w-full rounded-2xl bg-slate-200" />
       </div>
     );
   }
 
   if (!campaign) {
     return (
-      <div className="flex min-h-screen flex-col bg-slate-50/50">
-        <Header />
-        <main className="flex flex-1 items-center justify-center p-4">
-          <div className="text-center bg-white p-12 rounded-3xl shadow-sm border border-slate-100 max-w-md w-full">
-            <AlertTriangle className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-slate-800 mb-2">Campaign not found</h2>
-            <p className="text-slate-500 mb-6">This campaign might have been removed or doesn&apos;t exist.</p>
-            <Link href="/" className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 transition-all hover:shadow-md active:scale-95">Go back home</Link>
-          </div>
-        </main>
-        <Footer />
+      <div className="flex flex-1 items-center justify-center p-4">
+        <div className="text-center bg-white p-12 rounded-3xl shadow-sm border border-slate-100 max-w-md w-full">
+          <AlertTriangle className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-slate-800 mb-2">Campaign not found</h2>
+          <p className="text-slate-500 mb-6">This campaign might have been removed or doesn&apos;t exist.</p>
+          <Link href="/" className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 transition-all hover:shadow-md active:scale-95">Go back home</Link>
+        </div>
       </div>
     );
   }
@@ -148,10 +138,8 @@ export default function CampaignDetailPage() {
   const expired = isDeadlinePassed(campaign.deadline);
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <Header />
-
-      <main className="mx-auto max-w-5xl flex-1 px-4 py-10 sm:px-6 lg:px-8 w-full animate-fade-in-up">
+    <div className="bg-slate-50/50">
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8 w-full animate-fade-in-up">
         <Link
           href="/"
           className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -403,9 +391,7 @@ export default function CampaignDetailPage() {
             </Card>
           </div>
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </div>
   );
 }

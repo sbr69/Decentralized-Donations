@@ -6,9 +6,6 @@ import { useAccount } from "wagmi";
 import { parseUnits } from "viem";
 import { Loader2, Upload, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -83,11 +80,8 @@ export default function CreateCampaignPage() {
   const busy = uploading || isPending || confirming;
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50/50">
-      <Header />
-
-      <main className="flex-1">
-        <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8 animate-fade-in-up">
+    <div className="bg-slate-50/50">
+      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8 animate-fade-in-up">
           <Link
             href="/"
             className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-primary transition-colors"
@@ -260,9 +254,6 @@ export default function CreateCampaignPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-
-      <Footer />
     </div>
   );
 }
